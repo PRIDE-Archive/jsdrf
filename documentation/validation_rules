@@ -1,0 +1,15 @@
+#Validation Rules
+
+## Sample Validations
+
+SAM-R1. Each Sample in the experiment MUST contain a Source Name, and a collection of characteristics. Minimum number of columns should be present.
+SAM-R2. Column names should be correctly specified
+SAM-R3. Each characteristics name in the column header SHOULD be a control vocabulary (CV) term from the EFO ontology. For example, the Header characteristics[organism] corresponds to the ontology term Organism.
+SAM-R4. No leading ro trailing spaces should be present in values
+
+## Assay Validations
+
+ASS-R1. The following properties SHOULD be provided for each Sample/MSRun: assay name, comment[fraction identifier], comment[label], comment[data file]
+ASS-R2. The fraction identifier MUST start from 1 and if the experiment is not fractionated, the annotator MUST use 1 for each MSRun.
+
+
