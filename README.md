@@ -15,7 +15,7 @@ Java library to validate SDRF file formats. The [SDRF](https://github.com/bigbio
 
 ```bash
 
-- java -jar jdsrf-{X.X.X}.jar --sdrf query_file.tsv --template HUMAN
+java -jar jdsrf-{X.X.X}.jar --sdrf query_file.tsv --template HUMAN
 
 ```
 
