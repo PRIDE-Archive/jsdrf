@@ -43,8 +43,7 @@ public class SDRFParser {
             );
         }
 
-        SDRFContent sdrfContent = new SDRFContent(sdrfColumns, sdrfRows);
-        return sdrfContent;
+        return new SDRFContent(sdrfColumns, sdrfRows);
     }
 
     /**

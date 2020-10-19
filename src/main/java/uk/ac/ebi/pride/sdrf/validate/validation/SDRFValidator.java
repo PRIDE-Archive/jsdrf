@@ -166,9 +166,8 @@ public class SDRFValidator {
      * @return
      */
     public static List<ValidationError> checkRecommendations(){
-        List<ValidationError> validationWarnings = new ArrayList<>();
         // todo
-        return validationWarnings;
+        return new ArrayList<>();
     }
 
     /**

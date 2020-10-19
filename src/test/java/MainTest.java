@@ -35,6 +35,6 @@ class MainTest {
 
         Constants.Templates template = Enum.valueOf(Constants.Templates.class, templateName.trim().toUpperCase());
         List<ValidationError> errors = Main.validate(sdrfFile.getAbsolutePath(),template, verbose);
-        Assertions.assertTrue(errors.size()==1);
+        Assertions.assertEquals(1, errors.size());
     }
 }

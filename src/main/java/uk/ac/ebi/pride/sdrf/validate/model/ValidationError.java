@@ -6,8 +6,6 @@ import lombok.ToString;
 
 import static uk.ac.ebi.pride.sdrf.validate.util.Constants.*;
 
-import java.util.Set;
-
 /**
  * Represents a difference between the schema and data frame, found during the validation of the data
  *

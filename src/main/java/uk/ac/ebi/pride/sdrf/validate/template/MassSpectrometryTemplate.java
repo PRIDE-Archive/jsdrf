@@ -30,9 +30,8 @@ public class MassSpectrometryTemplate extends DefaultTemplate {
     @Override
     public List<ValidationError> validate() {
 
-        List<ValidationError> errors = new ArrayList<>();
         System.out.println("Mass Spectrometry template validation running...");
-        errors.addAll(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns));
+        List<ValidationError> errors = new ArrayList<>(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns));
         return errors;
     }
 }
