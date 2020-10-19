@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public class SDRFValidator {
 
-    final static List<String> specialColumns = Arrays.asList("sourcename", "assayname", "materialtype");
+    final static List<String> specialColumns = Arrays.asList("sourcename", "assayname", "materialtype","description");
     final static String columnNamePattern = "^(characteristics|comment|factor value)\\s*\\[([^\\]]+)\\](?:\\.\\d+)?$";
 
     public static List<ValidationError> validate(SDRFContent sdrfContent, List<SDRFColumnSchema> sdrfSchemaColumns) {
