@@ -6,6 +6,7 @@ import uk.ac.ebi.pride.utilities.ols.web.service.model.Term;
 
 import java.util.*;
 
+import static uk.ac.ebi.pride.sdrf.validate.util.Constants.NOT_APPLICABLE;
 import static uk.ac.ebi.pride.sdrf.validate.util.Constants.Ontology;
 import static uk.ac.ebi.pride.sdrf.validate.util.Constants.TERM_NAME;
 
@@ -24,20 +25,31 @@ public class OntologyTerm {
      * @return
      */
     public static boolean validate(String cellValue, Ontology ontology){
+
+        String ontologyTerms = null;
         OLSClient olsClient = new OLSClient(new OLSWsConfig());
-        List<String> labels = new ArrayList<>();
-        boolean isValid = true;
+        List<String> valuesFoundFromSearch = new ArrayList<>();
+        List<Term> termsFound = new ArrayList<>();
 
         Map<String,String> terms = ontologyTermParser(cellValue);
-        for (Map.Entry<String, String> entry : terms.entrySet()) {
-            if(ontology != null && !entry.getKey().equals(TERM_NAME)){
-               List<Term> termsFounds = olsClient.searchTermById(entry.getValue(), ontology.getName());
-               if(termsFounds.size() == 0){
-                   isValid = false;
-               }
+        for (Map.Entry<String, String> term : terms.entrySet()) {
+            if(!term.getKey().equals(TERM_NAME)){
+                ontologyTerms = null;
+            }else{
+                if(ontology != null){
+                    termsFound = olsClient.searchTermById(term.getValue(), ontology.getName());
+                 }else{
+                    termsFound = olsClient.searchTermById(term.getValue(), null);
+                }
+            }
+            for (Term t: termsFound) {
+                valuesFoundFromSearch.add(t.getName().toLowerCase());
             }
         }
-        return isValid;
+        if(ontology.isNotApplicable()) {
+            valuesFoundFromSearch.add(NOT_APPLICABLE);
+        }
+        return validate_ontology_terms(cellValue, valuesFoundFromSearch);
     }
 
     /**
@@ -53,8 +65,8 @@ public class OntologyTerm {
             term.put(TERM_NAME, values.get(0).toLowerCase());
         } else {
             for (String name : values){
-            String[] valueTerms = name.split("=");
-            term.put(valueTerms[0].trim().toUpperCase(), valueTerms[1].trim().toLowerCase());
+                String[] valueTerms = name.split("=");
+                term.put(valueTerms[0].trim().toUpperCase(), valueTerms[1].trim().toLowerCase());
             }
         }
         return term;
@@ -64,13 +76,19 @@ public class OntologyTerm {
      * Check if a cell value is in a list of labels or list of strings
      *
      * @param cellValue String line in cell
-     * @param labels list of labels
+     * @param valuesFoundFromSearch list of values Found From OLS Search
      * @return
      */
-    boolean validate_ontology_terms(String cellValue, List<String> labels){
+    static boolean validate_ontology_terms(String cellValue, List<String> valuesFoundFromSearch){
+        boolean isvalid = true;
         cellValue = cellValue.toLowerCase();
-        Map<String,String> term = ontologyTermParser(cellValue);
-        return labels.contains(term.get(TERM_NAME));
+        Map<String,String> terms = ontologyTermParser(cellValue);
+        for(Map.Entry<String,String> term : terms.entrySet()){
+            if(!valuesFoundFromSearch.contains(term.getValue())){
+                isvalid = false;
+                break;
+            }
+        }
+        return isvalid;
     }
-
 }

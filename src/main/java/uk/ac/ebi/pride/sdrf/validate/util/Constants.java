@@ -50,7 +50,7 @@ public class Constants {
         }
     }
 
-    public static final String TERM_NAME = "NM";
+    public static final String TERM_NAME = "NT";
     public static final String NOT_AVAILABLE = "not available";
     public static final String NOT_APPLICABLE = "not applicable";
 }
