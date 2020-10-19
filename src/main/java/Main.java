@@ -68,7 +68,7 @@ public class Main implements Runnable{
      * @param template Template
      * @return List of errors, empty list if no errors
      */
-    public List<ValidationError> validate(String sdrfFile, Templates template, boolean verbose) throws Exception {
+    public static List<ValidationError> validate(String sdrfFile, Templates template, boolean verbose) throws Exception {
 
         List<ValidationError> errors;
 
