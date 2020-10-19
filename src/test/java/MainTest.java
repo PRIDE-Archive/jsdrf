@@ -1,3 +1,4 @@
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +27,7 @@ class MainTest {
      *
      * @throws Exception
      */
+    @Ignore
     @Test
     void validateSampleFile() throws Exception {
 
