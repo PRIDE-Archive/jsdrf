@@ -2,6 +2,7 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import uk.ac.ebi.pride.sdrf.validate.Main;
 import uk.ac.ebi.pride.sdrf.validate.model.ValidationError;
 import uk.ac.ebi.pride.sdrf.validate.util.Constants;
 
