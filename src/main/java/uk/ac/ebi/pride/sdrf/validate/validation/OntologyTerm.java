@@ -80,15 +80,8 @@ public class OntologyTerm {
      * @return
      */
     static boolean validate_ontology_terms(String cellValue, List<String> valuesFoundFromSearch){
-        boolean isvalid = true;
         cellValue = cellValue.toLowerCase();
         Map<String,String> terms = ontologyTermParser(cellValue);
-        for(Map.Entry<String,String> term : terms.entrySet()){
-            if(!valuesFoundFromSearch.contains(term.getValue())){
-                isvalid = false;
-                break;
-            }
-        }
-        return isvalid;
+        return valuesFoundFromSearch.contains(terms.get(TERM_NAME));
     }
 }

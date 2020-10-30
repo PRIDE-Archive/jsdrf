@@ -48,7 +48,7 @@ public class SDRFValidator {
         // check for any recommendations which are missing in the SDRF
         List<ValidationError> validationWarnings = SDRFValidator.checkRecommendations();
         if (validationErrors.size() > 0) {
-            errors.addAll(validationErrors);
+            errors.addAll(validationWarnings);
         }
 
         System.out.println("Default template validation completed");

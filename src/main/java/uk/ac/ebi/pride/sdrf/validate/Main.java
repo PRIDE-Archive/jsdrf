@@ -8,10 +8,16 @@ import uk.ac.ebi.pride.sdrf.validate.model.SDRFContent;
 import uk.ac.ebi.pride.sdrf.validate.model.ValidationError;
 import uk.ac.ebi.pride.sdrf.validate.validation.SDRFParser;
 import uk.ac.ebi.pride.sdrf.validate.validation.Validator;
+import uk.ac.ebi.pride.utilities.ols.web.service.client.OLSClient;
+import uk.ac.ebi.pride.utilities.ols.web.service.config.OLSWsConfig;
+import uk.ac.ebi.pride.utilities.ols.web.service.model.Term;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static uk.ac.ebi.pride.sdrf.validate.util.Constants.Templates;
+import static uk.ac.ebi.pride.sdrf.validate.util.Constants.*;
 
 /**
  * @author Suresh Hewapathirana
@@ -48,12 +54,10 @@ public class Main implements Runnable{
 
     @Override
     public void run() {
-
-        Templates template = Enum.valueOf(Templates.class, templateName.trim().toUpperCase());
         try {
-            List<ValidationError> errors = validate(sdrfFile,template, verbose);
+            Set<ValidationError> errors = validate(sdrfFile, verbose);
            // provide some info to the user, as no info is confusing
-            if(errors.size()==0) {
+            if(errors == null || errors.size()==0) {
                 System.out.println("Everything seems to be fine. Well done.");
             }else {
                 System.out.println("There were validation errors.");
@@ -61,6 +65,52 @@ public class Main implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method will automatically detect the template by checkings the values of SDRF
+     * @param sdrfFile SDRF file full path
+     * @param verbose boolean value to print errors or not
+     * @return Set of errors, empty list if no errors
+     * @throws Exception
+     */
+    public static Set<ValidationError> validate(String sdrfFile, boolean verbose) throws Exception {
+
+        Set<ValidationError> errors = new HashSet<>();
+
+        try {
+            // parse file
+            SDRFParser sdrfParser = new SDRFParser();
+            SDRFContent sdrfContent = sdrfParser.getSDRFContent(sdrfFile);
+            Validator validator = new Validator(Templates.DEFAULT, sdrfContent);
+            List<ValidationError> errorsInDefault = validator.validate();
+            errors.addAll(errorsInDefault);
+            if(errorsInDefault.size()==0){
+                List<Templates> templates = getTemplate(sdrfContent);
+                if(templates.size()>0){
+                    for (Templates templatesFound:templates) {
+                        validator = new Validator(templatesFound, sdrfContent);
+                        List<ValidationError> errorsIntemplate= validator.validate();
+                        if(errorsIntemplate.size()>0) {
+                            errors.addAll(errorsIntemplate);
+                        }
+                    }
+                }
+                validator = new Validator(Templates.MASS_SPECTROMETRY, sdrfContent);
+                List<ValidationError> errorsInMS= validator.validate();
+                if(errorsInMS.size()>0) {
+                    errors.addAll(errorsInMS);
+                }
+            }
+            if(verbose){
+                for (ValidationError validationError : errors){
+                    log.info(validationError.toString());
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+        return errors;
     }
 
     /**
@@ -91,6 +141,60 @@ public class Main implements Runnable{
             throw new Exception(e.getMessage());
         }
         return errors;
+    }
+
+    /**
+     * Extract organism information and pick a template for validation
+     *
+     * @return
+     */
+    private  static List<Templates> getTemplate(SDRFContent sdrfContent){
+
+        OLSClient olsClient = new OLSClient(new OLSWsConfig());
+        List<Templates> templates = new ArrayList<>();
+        String cell = "characteristics[cultured cell]";
+        String organism = "characteristics[organism]";
+
+        List<String> columnData = sdrfContent.getColumnDataByName(cell);
+
+        for(String value: columnData){
+            if(!(value.equals(NOT_AVAILABLE) || value.equals(NOT_APPLICABLE))){
+                templates.add(Templates.CELL_LINES);
+                break;
+            }
+        }
+
+        Set<String> organisms = new HashSet<>();
+        for (String s : sdrfContent.getColumnDataByName(organism)) {
+            organisms.add(s);
+        }
+
+        for(String org: organisms){
+            if (org.equals("homo sapiens")){
+                templates.add(Templates.HUMAN);
+            }else{
+               Term hit = olsClient.getExactTermByName(org, "ncbitaxon");
+               if(hit != null){
+                   List<Term> ancestors = olsClient.getTermParents(hit.getIri(),"ncbitaxon",100000);
+                   if (ancestors == null || ancestors.size()==0) {
+                       System.out.println("Could not get ancestors!");
+                   }
+                   Set<String> labels = new HashSet<>();
+                   for (Term ancestor: ancestors) {
+                       labels.add(ancestor.getLabel());
+                   }
+                   if (labels.contains("Gnathostomata <vertebrates>")) {
+                       templates.add(Templates.VERTEBRATES);
+                   }else if(labels.contains("Metazoa")) {
+                       templates.add(Templates.NON_VERTEBRATES);
+                   }else if (labels.contains("Viridiplantae")){
+                       templates.add(Templates.PLANTS);
+                    }
+               }
+            }
+
+        }
+        return templates;
     }
 }
 
