@@ -13,7 +13,6 @@ import static uk.ac.ebi.pride.sdrf.validate.util.Constants.*;
  */
 @Data
 @AllArgsConstructor
-@ToString
 public class ValidationError {
     // error message
     String message;
@@ -26,4 +25,12 @@ public class ValidationError {
     String column;
     // error type (warning, error, info etc)
     Logging errorType;
+
+    @Override
+    public String toString() {
+        return errorType + " : " + message + '\'' +
+                ", value='" + value + '\'' +
+                ", row=" + row +
+                ", column='" + column + '\'';
+    }
 }
