@@ -15,6 +15,7 @@ public class VertebratesTemplate extends DefaultTemplate {
 
     public VertebratesTemplate(SDRFContent sdrfContent) {
         super(sdrfContent);
+        this.sdrfSchemaColumnsSize = 9;
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[developmental stage]", true, false, Ontology.NONE));
     }
 
@@ -22,7 +23,7 @@ public class VertebratesTemplate extends DefaultTemplate {
     public List<ValidationError> validate() {
         List<ValidationError> errors  = super.validate();
         System.out.println("Vertibrates template validation running...");
-        errors.addAll(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns));
+        errors.addAll(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns, this.sdrfSchemaColumnsSize));
         return errors;
     }
 }

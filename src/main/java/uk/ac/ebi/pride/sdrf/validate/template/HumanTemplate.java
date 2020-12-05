@@ -6,6 +6,7 @@ import uk.ac.ebi.pride.sdrf.validate.model.ValidationError;
 import uk.ac.ebi.pride.sdrf.validate.util.Constants.*;
 import uk.ac.ebi.pride.sdrf.validate.validation.SDRFValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class HumanTemplate extends DefaultTemplate {
 
     public HumanTemplate(SDRFContent sdrfContent) {
         super(sdrfContent);
-        this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[cell type]", true, false, Ontology.NONE));
+        this.sdrfSchemaColumnsSize = 11;
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[ancestry category]", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[age]", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[sex]", true, false, Ontology.NONE));
@@ -27,7 +28,7 @@ public class HumanTemplate extends DefaultTemplate {
     public List<ValidationError> validate() {
         List<ValidationError> errors  = super.validate();
         System.out.println("Human template validation running...");
-        errors.addAll(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns));
+        errors.addAll(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns, this.sdrfSchemaColumnsSize));
         return errors;
     }
 }
