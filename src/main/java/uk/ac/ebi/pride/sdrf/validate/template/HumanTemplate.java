@@ -6,7 +6,7 @@ import uk.ac.ebi.pride.sdrf.validate.model.ValidationError;
 import uk.ac.ebi.pride.sdrf.validate.util.Constants.*;
 import uk.ac.ebi.pride.sdrf.validate.validation.SDRFValidator;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
