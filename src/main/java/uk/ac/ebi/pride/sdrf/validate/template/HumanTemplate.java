@@ -17,6 +17,7 @@ public class HumanTemplate extends DefaultTemplate {
     public HumanTemplate(SDRFContent sdrfContent) {
         super(sdrfContent);
         this.sdrfSchemaColumnsSize = 11;
+        this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[cell type]", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[ancestry category]", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[age]", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema("characteristics[sex]", true, false, Ontology.NONE));
