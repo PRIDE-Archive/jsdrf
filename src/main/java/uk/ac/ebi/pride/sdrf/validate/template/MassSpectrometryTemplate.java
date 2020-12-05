@@ -16,6 +16,7 @@ public class MassSpectrometryTemplate extends DefaultTemplate {
 
     public MassSpectrometryTemplate(SDRFContent sdrfContent) {
         super(sdrfContent);
+        this.sdrfSchemaColumnsSize = 11;
         this.sdrfSchemaColumns.add(new SDRFColumnSchema( "assay name", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema( "comment[fraction identifier]", true, false, Ontology.NONE));
         this.sdrfSchemaColumns.add(new SDRFColumnSchema( "comment[label]", true, false, Ontology.PRIDE));
@@ -31,7 +32,8 @@ public class MassSpectrometryTemplate extends DefaultTemplate {
     public List<ValidationError> validate() {
 
         System.out.println("Mass Spectrometry template validation running...");
-        List<ValidationError> errors = new ArrayList<>(SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns));
+        List<ValidationError> errors = new ArrayList<>(SDRFValidator.validate(this.sdrfContent,
+                this.sdrfSchemaColumns, this.sdrfSchemaColumnsSize));
         return errors;
     }
 }

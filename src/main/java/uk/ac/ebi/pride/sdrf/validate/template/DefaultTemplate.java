@@ -17,6 +17,7 @@ public class DefaultTemplate implements Validation {
 
     SDRFContent sdrfContent;
     final List<SDRFColumnSchema> sdrfSchemaColumns = new ArrayList<>();
+    int sdrfSchemaColumnsSize = 8;
 
     public DefaultTemplate(SDRFContent sdrfContent) {
         this.sdrfContent = sdrfContent;
@@ -33,6 +34,6 @@ public class DefaultTemplate implements Validation {
     @Override
     public List<ValidationError> validate() {
         System.out.println("Default template validation running...");
-        return SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns);
+        return SDRFValidator.validate(this.sdrfContent, this.sdrfSchemaColumns, this.sdrfSchemaColumnsSize);
     }
 }

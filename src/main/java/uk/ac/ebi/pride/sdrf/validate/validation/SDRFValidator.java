@@ -16,14 +16,14 @@ public class SDRFValidator {
     final static List<String> specialColumns = Arrays.asList("sourcename", "assayname", "materialtype","description");
     final static String columnNamePattern = "^(characteristics|comment|factor value)\\s*\\[([^\\]]+)\\](?:\\.\\d+)?$";
 
-    public static List<ValidationError> validate(SDRFContent sdrfContent, List<SDRFColumnSchema> sdrfSchemaColumns) {
+    public static List<ValidationError> validate(SDRFContent sdrfContent, List<SDRFColumnSchema> sdrfSchemaColumns, int sdrfSchemaColumnSize) {
 
         List<ValidationError> errors = new ArrayList<>();
 
         // Check minimum number of columns
-        if (!SDRFValidator.isMinimumColumnsExists(sdrfContent, sdrfSchemaColumns)) {
+        if (!SDRFValidator.isMinimumColumnsExists(sdrfContent, sdrfSchemaColumnSize )) {
             String errorMessage = String.format("The number of columns in the SDRF ({}) is smaller than the number of mandatory fields ({})",
-                    sdrfContent.getSdrfColumns().size(), sdrfSchemaColumns.size());
+                    sdrfContent.getSdrfColumns().size(), sdrfSchemaColumnSize);
             errors.add(new ValidationError(errorMessage, "", 0, "N/A", Constants.Logging.ERROR));
         }
 
@@ -156,8 +156,8 @@ public class SDRFValidator {
      * Check if the SDRF has the minimal columns defined in the schema
      * @return
      */
-    public static boolean isMinimumColumnsExists(SDRFContent sdrfContent, List<SDRFColumnSchema> sdrfSchemaColumns){
-        return sdrfContent.getSdrfColumns().size() >= sdrfSchemaColumns.size();
+    public static boolean isMinimumColumnsExists(SDRFContent sdrfContent, int sdrfSchemaColumnSize){
+        return sdrfContent.getSdrfColumns().size() >= sdrfSchemaColumnSize;
     }
 
     /**
