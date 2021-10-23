@@ -35,3 +35,5 @@ Using the Java library with maven:
 
 Perez-Riverol, Yasset, European Bioinformatics Community for Mass Spectrometry. "Towards a sample metadata standard in public proteomics repositories." Journal of Proteome Research (2020) [Manuscript](https://pubs.acs.org/doi/abs/10.1021/acs.jproteome.0c00376).
 
+Dai, C., Füllgrabe, A., Pfeuffer, J. et al. A proteomics sample metadata representation for multiomics integration and big data analysis. Nat Commun 12, 5854 (2021). https://doi.org/10.1038/s41467-021-26111-3 [Manuscript](https://www.nature.com/articles/s41467-021-26111-3.pdf)
+
