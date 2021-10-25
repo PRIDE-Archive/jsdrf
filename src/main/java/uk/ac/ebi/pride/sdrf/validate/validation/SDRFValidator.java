@@ -4,6 +4,7 @@ import uk.ac.ebi.pride.sdrf.validate.model.*;
 import uk.ac.ebi.pride.sdrf.validate.util.Constants;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class SDRFValidator {
 
     final static List<String> specialColumns = Arrays.asList("sourcename", "assayname", "materialtype","description","technologytype");
     final static String columnNamePattern = "^(characteristics|comment|factor value)\\s*\\[([^\\]]+)\\](?:\\.\\d+)?$";
+    public static final Logger logger = Logger.getLogger(SDRFValidator.class.getName());
 
     public static List<ValidationError> validate(SDRFContent sdrfContent, List<SDRFColumnSchema> sdrfSchemaColumns, int sdrfSchemaColumnSize) {
 
@@ -111,7 +113,11 @@ public class SDRFValidator {
                     if(schema.isPresent() && schema.get().getOntology() != Constants.Ontology.NONE){
                         if(!validatedOntologyTerms.contains(cellValue)){
                             if(!OntologyTerm.validate(cellValue, schema.get().getOntology())){ // if not valid
-                                validationErrors.add(new ValidationError("Value is not match with ontology", cellValue, row.getRowNo(),colName, Constants.Logging.ERROR));
+                                if(!colName.equals("comment[modification parameters]")) {
+                                    validationErrors.add(new ValidationError("Value is not match with ontology", cellValue, row.getRowNo(), colName, Constants.Logging.ERROR));
+                                }else {
+                                    logger.warning("Value is not match with ontology "  + cellValue + row.getRowNo() + colName + Constants.Logging.WARNING );
+                                }
                             }
                             validatedOntologyTerms.add(cellValue);
                         }
