@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static uk.ac.ebi.pride.sdrf.validate.util.Constants.*;
 
@@ -38,6 +39,8 @@ public class Main implements Runnable{
             "        PLANTS,\n" +
             "        VERTEBRATES")
     private String templateName = "DEFAULT";
+
+    public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     @Option(names = {"-v", "--verbose"}, description ="Print errors")
     private boolean verbose = false;
@@ -83,6 +86,7 @@ public class Main implements Runnable{
             SDRFParser sdrfParser = new SDRFParser();
             SDRFContent sdrfContent = sdrfParser.getSDRFContent(sdrfFile);
             Validator validator = new Validator(Templates.DEFAULT, sdrfContent);
+            logger.info("Validating file " + sdrfFile );
             List<ValidationError> errorsInDefault = validator.validate();
             errors.addAll(errorsInDefault);
             if(errorsInDefault.size()==0){
