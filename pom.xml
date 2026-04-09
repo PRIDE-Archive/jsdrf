@@ -25,7 +25,8 @@
     </developers>
 
     <properties>
-        <uk.ac.ebi.pride.utilities.olsclient.version>2.16-SNAPSHOT</uk.ac.ebi.pride.utilities.olsclient.version>
+        <olsclient.version>2.16-SNAPSHOT</olsclient.version>
+        <lombokVersion>1.18.32</lombokVersion>
         <java.version>21</java.version>
     </properties>
 
@@ -55,13 +56,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>${lombokVersion}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>uk.ac.ebi.pride.utilities</groupId>
             <artifactId>ols-client</artifactId>
-            <version>${uk.ac.ebi.pride.utilities.olsclient.version}</version>
+            <version>${olsclient.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -111,6 +112,16 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombokVersion}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Alombok.addGeneratedAnnotation=false</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
