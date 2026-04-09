@@ -25,7 +25,7 @@
     </developers>
 
     <properties>
-        <uk.ac.ebi.pride.utilities.olsclient.version>2.13-SNAPSHOT</uk.ac.ebi.pride.utilities.olsclient.version>
+        <uk.ac.ebi.pride.utilities.olsclient.version>2.16-SNAPSHOT</uk.ac.ebi.pride.utilities.olsclient.version>
     </properties>
 
     <dependencies>
